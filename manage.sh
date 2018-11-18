@@ -48,6 +48,7 @@ service_init(){
     sleep 5
     sh ./rules_template.yml
     kubectl apply -f rules.yml
+    sleep 10 # Let nginx apply rules and get external IP
     export SERVICE_IP=$(kubectl get svc -n micro-namespace -l app=ingress-nginx | awk '/ingress-nginx/{print $4}')
     echo "try running 'curl -v ${SERVICE_IP}${SERVICE_PATH}'"
     exit 0
