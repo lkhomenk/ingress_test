@@ -1,0 +1,49 @@
+cat <<EOF>deployment_${SERVICE_NAME}.yml
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: ${SERVICE_NAME}-deployment
+  namespace: micro-namespace
+spec:
+  selector:
+    matchLabels:
+      app: ${SERVICE_NAME}
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ${SERVICE_NAME}
+    spec:
+      containers:
+      - name: ${SERVICE_NAME}
+        image: "lkhomenk/hello-python"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+          name: web
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+          limits:
+            cpu: 10m
+            memory: 32Mi
+        # securityContext:
+        #   privileged: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${SERVICE_NAME}
+  namespace: micro-namespace
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+    name: http
+  selector:
+    app: ${SERVICE_NAME}
+EOF

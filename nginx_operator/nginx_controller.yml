@@ -14,13 +14,13 @@ spec:
         app: ingress-nginx
       annotations:
     spec:
-      serviceAccountName: nginx-ingress-serviceaccount      
+      serviceAccountName: nginx-ingress-serviceaccount
       containers:
         - name: nginx-ingress-controller
           image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.9.0-beta.17
           args:
             - /nginx-ingress-controller
-            - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
+            - --default-backend-service=$(POD_NAMESPACE)/nginx-errors
           env:
             - name: POD_NAME
               valueFrom:

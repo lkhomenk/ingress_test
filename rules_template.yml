@@ -1,0 +1,6 @@
+cat<<EOF>>rules.yml
+      - path: ${SERVICE_PATH}
+        backend:
+          serviceName: ${SERVICE_NAME}
+          servicePort: 80
+EOF
