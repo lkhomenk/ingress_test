@@ -2,6 +2,7 @@
 
 Requirements
 1. Google Cloud SDK - https://cloud.google.com/sdk/docs/downloads-versioned-archives
+  * GCP service account JSON key
 2. kubectl (To install it from gcloud - use Versioned archive installation)
 
 Instaructions:
@@ -14,3 +15,4 @@ TODO:
 3. Add more verification for kubectl commands results
 4. Improve 'skip' logic - skip only if step is verified (e.g GCP account exists/Router installed)
 5. Template all YAMLs to be more agile with namespaces/etc
+6. Cleanup main folder, improve structure
