@@ -1,4 +1,4 @@
-cat<<EOF>>rules.yml
+cat<<EOF>>./deploy/rules.yml
       - path: ${SERVICE_PATH}
         backend:
           serviceName: ${SERVICE_NAME}

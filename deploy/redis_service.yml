@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-redis
+  namespace: micro-namespace
+  labels:
+    app: redis
+spec:
+  selector:
+    app: redis
+  type: ClusterIP
+  ports:
+    - port: 6379
+      protocol: TCP
+      targetPort: 6379

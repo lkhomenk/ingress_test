@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: local-redis
+  namespace: micro-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  serviceName: redis-service
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: redis
+          # configure persistence (the Redis default config has persistence disabled by default)
+          args: ["--appendonly", "yes", "--save", "900", "1", "--save", "30", "2"]
+          ports:
+            - containerPort: 6379
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: standard
+        resources:
+          requests:
+            storage: 1Gi

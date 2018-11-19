@@ -10,7 +10,3 @@ spec:
   rules:
   - http:
       paths:
-      - path: /svc1
-        backend:
-          serviceName: micro-service
-          servicePort: 80

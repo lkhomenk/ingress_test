@@ -7,12 +7,15 @@ gcloud_init(){
 
 # Router init which should already respond
 router_init(){
-    kubectl apply -f namespace.yml
-    kubectl apply -f nginx_operator/rbac.yml
-    kubectl apply -f nginx_operator/errors_backend.yml
-    kubectl apply -f nginx_operator/nginx_controller.yml
-    kubectl apply -f nginx_operator/nginx_service.yml
+    kubectl apply -f ./deploy/namespace.yml
+    kubectl apply -f ./nginx_operator/rbac.yml
+    kubectl apply -f ./nginx_operator/errors_backend.yml
+    kubectl apply -f ./nginx_operator/nginx_controller.yml
+    kubectl apply -f ./nginx_operator/nginx_service.yml
     sleep 10
+    # Deploy REDIS as part of preparation: 1 redis for all services
+    kubectl apply -f ./deploy/redis_deployment.yml
+    kubectl apply -f ./deploy/redis_service.yml
 }
 
 # Deploy microservice
@@ -43,11 +46,11 @@ service_init(){
         esac
     done
 
-    sh ./deployment_template.yml
-    kubectl apply -f deployment_${SERVICE_NAME}.yml
+    sh ./deploy/deployment_template.yml
+    kubectl apply -f ./deploy/deployment_${SERVICE_NAME}.yml
     sleep 5
-    sh ./rules_template.yml
-    kubectl apply -f rules.yml
+    sh ./deploy/rules_template.yml
+    kubectl apply -f ./deploy/rules.yml
     sleep 10 # Let nginx apply rules and get external IP
     export SERVICE_IP=$(kubectl get svc -n micro-namespace -l app=ingress-nginx | awk '/ingress-nginx/{print $4}')
     echo "try running 'curl -v ${SERVICE_IP}${SERVICE_PATH}'"
